@@ -5,20 +5,20 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class UpdateClientRequest {
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "Name is required.")
+    @Size(max = 100, message = "Name cannot exceed 100 characters.")
     private String name;
 
-    @Email
-    @NotBlank
+    @Email(message = "Email format is invalid.")
+    @NotBlank(message = "Email is required.")
     private String email;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "Phone is required.")
+    @Size(max = 20, message = "Phone cannot exceed 20 characters.")
     private String phone;
 
-    @NotBlank
-    @Size(max = 255)
+    @NotBlank(message = "Address is required.")
+    @Size(max = 255, message = "Address cannot exceed 255 characters.")
     private String address;
 
     public UpdateClientRequest() {}

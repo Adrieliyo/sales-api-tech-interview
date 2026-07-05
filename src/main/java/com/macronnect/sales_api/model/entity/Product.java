@@ -11,16 +11,19 @@ public class Product extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true, length = 50)
     private String code;
 
+    @Column(nullable = false, length = 255)
     private String name;
 
+    @Column(nullable = false, length = 500)
     private String description;
 
-    @Column(precision = 10, scale = 2)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    @Column(nullable = false)
     private Integer stock;
 
     @OneToMany(mappedBy = "product")

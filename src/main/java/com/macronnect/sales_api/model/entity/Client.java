@@ -1,8 +1,8 @@
 package com.macronnect.sales_api.model.entity;
-import com.macronnect.sales_api.model.enums.ClientStatus;
+
+import com.macronnect.sales_api.model.enums.Status;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
@@ -26,14 +26,14 @@ public class Client extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ClientStatus status = ClientStatus.ACTIVE;
+    private Status status = Status.ACTIVE;
 
     @OneToMany(mappedBy = "client")
     private List<Sale> sales = new ArrayList<>();
 
     public Client() {}
 
-    public Client(Long id, String name, String email, String phone, String address, ClientStatus status) {
+    public Client(Long id, String name, String email, String phone, String address, Status status) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -82,9 +82,9 @@ public class Client extends BaseEntity {
         this.address = address;
     }
 
-    public ClientStatus getStatus() {return status;}
+    public Status getStatus() {return status;}
 
-    public void setStatus(ClientStatus status) {this.status = status;}
+    public void setStatus(Status status) {this.status = status;}
 
     public List<Sale> getSales() {
         return sales;

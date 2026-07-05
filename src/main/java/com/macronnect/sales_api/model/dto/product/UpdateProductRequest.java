@@ -2,23 +2,27 @@ package com.macronnect.sales_api.model.dto.product;
 
 import java.math.BigDecimal;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 
 public class UpdateProductRequest {
-    @NotBlank
+    @NotBlank(message = "Product code is required.")
+    @Size(max = 50, message = "Product code must not exceed 50 characters.")
     private String code;
 
-    @NotBlank
+    @NotBlank(message = "Product name is required.")
+    @Size(max = 255, message = "Product name must not exceed 255 characters.")
     private String name;
 
+    @NotBlank(message = "Description is required.")
+    @Size(max = 500)
     private String description;
 
-    @DecimalMin("0.00")
+    @NotNull(message = "Price is required.")
+    @DecimalMin(value = "0.01", message = "Price must be greater than zero.")
     private BigDecimal price;
 
-    @Min(0)
+    @NotNull(message = "Stock is required.")
+    @Min(value = 0, message = "Stock cannot be negative.")
     private Integer stock;
 
     public UpdateProductRequest() {}

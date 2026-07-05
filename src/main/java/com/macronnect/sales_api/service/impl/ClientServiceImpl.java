@@ -7,15 +7,12 @@ import com.macronnect.sales_api.model.dto.client.ClientDTO;
 import com.macronnect.sales_api.model.dto.client.CreateClientRequest;
 import com.macronnect.sales_api.model.dto.client.UpdateClientRequest;
 import com.macronnect.sales_api.model.entity.Client;
-import com.macronnect.sales_api.model.enums.ClientStatus;
+import com.macronnect.sales_api.model.enums.Status;
 import com.macronnect.sales_api.repository.ClientRepository;
 import com.macronnect.sales_api.service.ClientService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -27,7 +24,7 @@ public class ClientServiceImpl implements ClientService {
         this.mapper = mapper;
     }
 
-    private ClientDTO changeStatus(Long id, ClientStatus status) {
+    private ClientDTO changeStatus(Long id, Status status) {
 
         Client client = repository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));
@@ -81,18 +78,18 @@ public class ClientServiceImpl implements ClientService {
     public Page<ClientDTO> getAll(Pageable pageable){
 
         return repository
-                .findAllByStatus(ClientStatus.ACTIVE, pageable)
+                .findAllByStatus(Status.ACTIVE, pageable)
                 .map(mapper::toResponse);
     }
 
     @Override
     public void delete(Long id) {
-        changeStatus(id, ClientStatus.INACTIVE);
+        changeStatus(id, Status.INACTIVE);
     }
 
     @Override
     public ClientDTO activate(Long id) {
-        return changeStatus(id, ClientStatus.ACTIVE);
+        return changeStatus(id, Status.ACTIVE);
     }
 
 }

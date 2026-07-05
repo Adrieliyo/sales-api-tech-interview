@@ -1,9 +1,7 @@
 package com.macronnect.sales_api.model.dto.client;
 
-import com.macronnect.sales_api.model.entity.Client;
-import com.macronnect.sales_api.model.enums.ClientStatus;
+import com.macronnect.sales_api.model.enums.Status;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ClientDTO {
@@ -12,11 +10,11 @@ public class ClientDTO {
     private final String email;
     private final String phone;
     private final String address;
-    private final ClientStatus status;
+    private final Status status;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public ClientDTO(Long id, String name, String email, String phone, String address, ClientStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ClientDTO(Long id, String name, String email, String phone, String address, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -32,7 +30,7 @@ public class ClientDTO {
     public String getEmail() { return email; }
     public String getPhone() { return phone; }
     public String getAddress() { return address; }
-    public ClientStatus getStatus() { return status; }
+    public Status getStatus() { return status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

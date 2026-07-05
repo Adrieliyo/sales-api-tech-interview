@@ -1,7 +1,7 @@
 package com.macronnect.sales_api.repository;
 
 import com.macronnect.sales_api.model.entity.Client;
-import com.macronnect.sales_api.model.enums.ClientStatus;
+import com.macronnect.sales_api.model.enums.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +13,5 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     boolean existsByEmail(String email);
 
-    Page<Client> findAllByStatus(ClientStatus status, Pageable pageable);
+    Page<Client> findAllByStatus(Status status, Pageable pageable);
 }
