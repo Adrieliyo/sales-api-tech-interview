@@ -1,7 +1,7 @@
 package com.macronnect.sales_api.service.impl;
 
-import com.macronnect.sales_api.exception.ClientNotFoundException;
-import com.macronnect.sales_api.exception.EmailAlreadyExistsException;
+import com.macronnect.sales_api.exception.client.ClientNotFoundException;
+import com.macronnect.sales_api.exception.client.EmailAlreadyExistsException;
 import com.macronnect.sales_api.mapper.ClientMapper;
 import com.macronnect.sales_api.model.dto.client.ClientDTO;
 import com.macronnect.sales_api.model.dto.client.CreateClientRequest;

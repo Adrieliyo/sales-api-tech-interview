@@ -1,12 +1,13 @@
 package com.macronnect.sales_api.exception;
 
+import com.macronnect.sales_api.exception.client.ClientNotFoundException;
+import com.macronnect.sales_api.exception.client.EmailAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -15,33 +16,70 @@ import java.util.*;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,String>> handleValidationExceptions(MethodArgumentNotValidException ex){
-        Map<String, String> errors = new HashMap<>();
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
 
-        ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        Map<String, String> errors = new LinkedHashMap<>();
+
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error ->
+                        errors.put(error.getField(), error.getDefaultMessage()));
 
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(ClientNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleClientNotFound(ClientNotFoundException ex) {
-        ErrorResponse error = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                ex.getMessage());
+    /**
+     * Recursos no encontrados (404)
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFound(
+            ResourceNotFoundException ex) {
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+        return buildErrorResponse(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage());
     }
 
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
+    /**
+     * Recursos duplicados (409)
+     */
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateResource(
+            DuplicateResourceException ex) {
+
+        return buildErrorResponse(
+                HttpStatus.CONFLICT,
+                ex.getMessage());
+    }
+
+    /**
+     * Errores inesperados (500)
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneralException(
+            Exception ex) {
+
+        ex.printStackTrace();
+
+        return buildErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "An unexpected error occurred.");
+    }
+
+    /**
+     * Método auxiliar para construir respuestas de error
+     */
+    private ResponseEntity<ErrorResponse> buildErrorResponse(
+            HttpStatus status,
+            String message) {
+
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
-                HttpStatus.CONFLICT.value(),
-                HttpStatus.CONFLICT.getReasonPhrase(),
-                ex.getMessage());
+                status.value(),
+                status.getReasonPhrase(),
+                message);
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+        return ResponseEntity.status(status).body(error);
     }
 }

@@ -21,7 +21,16 @@ public class ClientMapper {
     }
 
     public ClientDTO toResponse(Client client) {
-        return new ClientDTO(client.getId(), client.getName(), client.getEmail(), client.getPhone(), client.getAddress(), client.getStatus(), client.getCreatedAt(), client.getUpdatedAt());
+        return new ClientDTO(
+                client.getId(),
+                client.getName(),
+                client.getEmail(),
+                client.getPhone(),
+                client.getAddress(),
+                client.getStatus(),
+                client.getCreatedAt(),
+                client.getUpdatedAt()
+        );
     }
 
 }
