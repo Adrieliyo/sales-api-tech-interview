@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Long> {
     Optional<Client> findByEmail(String email);
 
+    Optional<Client> findByIdAndStatus(Long id, Status status);
+
     boolean existsByEmail(String email);
 
     Page<Client> findAllByStatus(Status status, Pageable pageable);

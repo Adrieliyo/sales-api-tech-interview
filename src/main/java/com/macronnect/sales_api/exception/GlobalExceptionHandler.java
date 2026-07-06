@@ -2,6 +2,8 @@ package com.macronnect.sales_api.exception;
 
 import com.macronnect.sales_api.exception.client.ClientNotFoundException;
 import com.macronnect.sales_api.exception.client.EmailAlreadyExistsException;
+import com.macronnect.sales_api.exception.sale.InsufficientStockException;
+import com.macronnect.sales_api.exception.sale.SaleAlreadyCancelledException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -65,6 +67,32 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "An unexpected error occurred.");
+    }
+
+    /**
+     * Manejo de ventas que ya fueron canceladas (409)
+     */
+    @ExceptionHandler(SaleAlreadyCancelledException.class)
+    public ResponseEntity<ErrorResponse> handleSaleAlreadyCancelled(
+            SaleAlreadyCancelledException ex) {
+
+        return buildErrorResponse(
+                HttpStatus.CONFLICT,
+                ex.getMessage());
+
+    }
+
+    /**
+     * Manejo de stock insuficiente (400)
+     */
+    @ExceptionHandler(InsufficientStockException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientStock(
+            InsufficientStockException ex) {
+
+        return buildErrorResponse(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage());
+
     }
 
     /**

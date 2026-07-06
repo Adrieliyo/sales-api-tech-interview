@@ -15,19 +15,21 @@ public class Sale extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private Long invoice_number;
+    @Column(name = "invoice_number", unique = true, nullable = false)
+    private Long invoiceNumber;
 
+    @Column(nullable = false)
     private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private SaleStatus status;
 
-    @Column(precision = 10, scale = 2)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal total;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @OneToMany(mappedBy = "sale",
@@ -35,5 +37,70 @@ public class Sale extends BaseEntity {
             orphanRemoval = true)
     private List<SaleDetail> details = new ArrayList<>();
 
+    public Sale(){}
 
+    public Sale(Long id, Long invoiceNumber, LocalDateTime date, SaleStatus status, BigDecimal total, Client client) {
+        this.id = id;
+        this.invoiceNumber = invoiceNumber;
+        this.date = date;
+        this.status = status;
+        this.total = total;
+        this.client = client;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(Long invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public SaleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SaleStatus status) {
+        this.status = status;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public List<SaleDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<SaleDetail> details) {
+        this.details = details;
+    }
 }
